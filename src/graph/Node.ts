@@ -11,7 +11,6 @@ abstract class Node {
 
     constructor(name: string) {
         this.name = name;
-        this.computed = false;
         this.parent = null;
         this.childs = [];
         this.inputs = [];
@@ -53,7 +52,7 @@ abstract class Node {
             return false;
         }
 
-        this.inputs.push(output);
+        this.outputs.push(output);
         return true;
     }
 
@@ -106,20 +105,6 @@ abstract class Node {
         return this.childs.length === 0;
     }
 
-    isReady(): boolean {
-        return (this.inputs.filter((value) => {
-            return (value.isComputed() === false);
-        }).length === 0);
-    }
-
-    isComputed(): boolean {
-        return this.computed;
-    }
-
-    hasComputed(): void {
-        this.computed = true;
-    }
-
     setInputs(inputs: Array<IGate>): void {
         this.inputs = inputs;
     }
@@ -136,19 +121,11 @@ abstract class Node {
         return this.outputs;
     }
 
-    reset(): void {
-        this.computed = false;
-        for (let i = 0; i < this.inputs.length; i++) {
-            this.inputs[i].reset();
-        }
-    }
-
-    abstract compute(): void;
+    abstract compute(): Node;
 
     private name: string;
-    private computed: boolean;
     private parent: Node;
-    private childs: Array<Node>;
+    protected childs: Array<Node>;
     protected inputs: Array<IGate>;
     protected outputs: Array<IGate>;
 }

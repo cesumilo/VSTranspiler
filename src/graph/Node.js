@@ -1,9 +1,14 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var Node = (function () {
+/**
+ * Created by cesumilo
+ * Author: Guillaume ROBIN <robinguillaume.pro@gmail.com>
+ * Date: 10/01/2018
+ * Licence: All rights reserved @ Guillaume ROBIN <robinguillaume.pro@gmail.com>
+ */
+exports.__esModule = true;
+var Node = /** @class */ (function () {
     function Node(name) {
         this.name = name;
-        this.computed = false;
         this.parent = null;
         this.childs = [];
         this.inputs = [];
@@ -36,7 +41,7 @@ var Node = (function () {
         }).length > 0) {
             return false;
         }
-        this.inputs.push(output);
+        this.outputs.push(output);
         return true;
     };
     Node.prototype.removeOutput = function (name) {
@@ -75,17 +80,6 @@ var Node = (function () {
     Node.prototype.isLeaf = function () {
         return this.childs.length === 0;
     };
-    Node.prototype.isReady = function () {
-        return (this.inputs.filter(function (value) {
-            return (value.isComputed() === false);
-        }).length === 0);
-    };
-    Node.prototype.isComputed = function () {
-        return this.computed;
-    };
-    Node.prototype.hasComputed = function () {
-        this.computed = true;
-    };
     Node.prototype.setInputs = function (inputs) {
         this.inputs = inputs;
     };
@@ -98,13 +92,6 @@ var Node = (function () {
     Node.prototype.getOutputs = function () {
         return this.outputs;
     };
-    Node.prototype.reset = function () {
-        this.computed = false;
-        for (var i = 0; i < this.inputs.length; i++) {
-            this.inputs[i].reset();
-        }
-    };
     return Node;
 }());
-exports.default = Node;
-//# sourceMappingURL=Node.js.map
+exports["default"] = Node;

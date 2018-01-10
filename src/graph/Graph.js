@@ -1,4 +1,10 @@
 "use strict";
+/**
+ * Created by cesumilo
+ * Author: Guillaume ROBIN <robinguillaume.pro@gmail.com>
+ * Date: 10/01/2018
+ * Licence: All rights reserved @ Guillaume ROBIN <robinguillaume.pro@gmail.com>
+ */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,12 +15,15 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var Node_1 = require("./Node");
-var Graph = (function (_super) {
+var Dictionary_1 = require("../shared/Dictionary");
+var Graph = /** @class */ (function (_super) {
     __extends(Graph, _super);
     function Graph(name) {
-        return _super.call(this, name) || this;
+        var _this = _super.call(this, name) || this;
+        _this.network = new Dictionary_1["default"]();
+        return _this;
     }
     Graph.prototype.addNode = function (node) {
         var containsKey = this.network.containsKey(node.getName());
@@ -64,28 +73,15 @@ var Graph = (function (_super) {
         return containsKey && removedValue;
     };
     Graph.prototype.compute = function () {
-        var root = this.network.values().filter(function (value) { return value.isRoot(); })[0];
-        var leaf = this.network.values().filter(function (value) { return value.isLeaf(); })[0];
-        root.setInputs(this.inputs);
-        this.setOutputs(leaf.getOutputs());
-        var opened = this.network.values().filter(function (value) { return value.isReady() && value.isComputed(); });
-        var closed = this.network.values().filter(function (value) { return value.isReady() === false; });
-        while (closed.length > 0) {
-            for (var i = 0; i < opened.length; i++) {
-                opened[i].compute();
-                opened[i].hasComputed();
-            }
-            opened = this.network.values().filter(function (value) { return value.isReady() && value.isComputed(); });
-            closed = this.network.values().filter(function (value) { return value.isReady() === false; });
+        var current = this.network.values().filter(function (value) { return value.isRoot(); })[0];
+        current.setInputs(this.inputs);
+        while (!current.isLeaf()) {
+            current = current.compute();
         }
-    };
-    Graph.prototype.reset = function () {
-        _super.prototype.reset.call(this);
-        for (var i = 0; i < this.network.values().length; i++) {
-            this.network.values()[i].reset();
-        }
+        current.compute();
+        this.setOutputs(current.getOutputs());
+        return (this.isLeaf() ? null : this.childs[0]);
     };
     return Graph;
-}(Node_1.default));
-exports.default = Graph;
-//# sourceMappingURL=Graph.js.map
+}(Node_1["default"]));
+exports["default"] = Graph;

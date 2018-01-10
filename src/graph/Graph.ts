@@ -13,6 +13,8 @@ class Graph extends Node {
 
     constructor(name: string) {
         super(name);
+
+        this.network = new Dictionary();
     }
 
     addNode(node: Node): boolean {
@@ -74,32 +76,19 @@ class Graph extends Node {
         return containsKey && removedValue;
     }
 
-    compute(): void {
-        let root = this.network.values().filter((value) => value.isRoot())[0];
-        let leaf = this.network.values().filter((value) => value.isLeaf())[0];
+    compute(): Node {
+        let current = this.network.values().filter((value) => value.isRoot())[0];
 
-        root.setInputs(this.inputs);
-        this.setOutputs(leaf.getOutputs());
+        current.setInputs(this.inputs);
 
-        let opened = this.network.values().filter((value) => value.isReady() && value.isComputed());
-        let closed = this.network.values().filter((value) => value.isReady() === false);
-
-        while (closed.length > 0) {
-            for (let i = 0; i < opened.length; i++) {
-                opened[i].compute();
-                opened[i].hasComputed();
-            }
-
-            opened = this.network.values().filter((value) => value.isReady() && value.isComputed());
-            closed = this.network.values().filter((value) => value.isReady() === false);
+        while (!current.isLeaf()) {
+            current = current.compute();
         }
-    }
 
-    reset(): void {
-        super.reset();
-        for (let i = 0; i < this.network.values().length; i++) {
-            this.network.values()[i].reset();
-        }
+        current.compute();
+        this.setOutputs(current.getOutputs());
+
+        return (this.isLeaf() ? null : this.childs[0]);
     }
 
     private network: Dictionary<string, Node>;

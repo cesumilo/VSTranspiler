@@ -7,6 +7,7 @@
 
 import Node from './graph/Node';
 import Gate from './graph/Gate';
+import Graph from './graph/Graph';
 
 class AddNode extends Node {
 
@@ -14,54 +15,70 @@ class AddNode extends Node {
         super(name);
     }
 
-    compute(): void {
+    compute(): Node {
         let output = this.outputs[0] as Gate<number>;
         let a = this.inputs[0] as Gate<number>;
         let b = this.inputs[1] as Gate<number>;
 
         output.setValue(a.getValue() + b.getValue());
+        console.log(output);
+
+        return (this.isLeaf() ? null : this.childs[0]);
     }
 }
 
-class SubstractNode extends Node {
+class SubtractNode extends Node {
 
     constructor(name: string) {
         super(name);
     }
 
-    compute(): void {
+    compute(): Node {
         let output = this.outputs[0] as Gate<number>;
         let a = this.inputs[0] as Gate<number>;
         let b = this.inputs[1] as Gate<number>;
 
         output.setValue(a.getValue() - b.getValue());
+        console.log(output);
+
+        return (this.isLeaf() ? null : this.childs[0]);
     }
 }
 
 function main() {
+    let graph: Graph = new Graph("graph");
+
     let addNode: AddNode = new AddNode("add node");
-    let subNode: SubstractNode = new SubstractNode("sub node");
+    let subNode: SubtractNode = new SubtractNode("sub node");
 
     let a: Gate<number> = new Gate<number>("a");
     let b: Gate<number> = new Gate<number>("b");
+    let c: Gate<number> = new Gate<number>("b");
+
     let addResult: Gate<number> = new Gate<number>("addResult");
-    let substractResult: Gate<number> = new Gate<number>("substractResult");
+    let subtractResult: Gate<number> = new Gate<number>("subtractResult");
 
-    addNode.addInput(a);
-    addNode.addInput(b);
     addNode.addOutput(addResult);
-    addNode.addChild(subNode);
+    subNode.addOutput(subtractResult);
 
-    subNode.setParent(addNode);
-    subNode.addInput(b);
-    subNode.addInput(addResult);
-    subNode.addOutput(substractResult);
+    graph.addNode(addNode);
+    graph.addNode(subNode);
+
+    graph.addInput(a);
+    graph.addInput(b);
+
+    graph.addReference(subNode.getName(), addResult);
+    graph.addReference(subNode.getName(), c);
+
+    graph.addLink(addNode.getName(), subNode.getName());
 
     a.setValue(10);
     b.setValue(10);
+    c.setValue(5);
 
-    console.log("a is computed:", a.isComputed(), a.getValue());
-    console.log("b is computed:", b.isComputed(), b.getValue());
+    graph.compute();
+    let output = graph.getOutputs()[0] as Gate<number>;
+    console.log("10 + 10 - 5 = ", output.getValue());
 }
 
 main();

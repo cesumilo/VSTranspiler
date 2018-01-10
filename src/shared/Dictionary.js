@@ -5,8 +5,8 @@
  * Date: 10/01/2018
  * Licence: All rights reserved @ Guillaume ROBIN <robinguillaume.pro@gmail.com>
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-var Dictionary = (function () {
+exports.__esModule = true;
+var Dictionary = /** @class */ (function () {
     function Dictionary() {
         this._keys = [];
         this._values = [];
@@ -58,7 +58,7 @@ var Dictionary = (function () {
     Dictionary.prototype.containsKey = function (key) {
         var _this = this;
         var containsKeyAction = function (key) {
-            return _this._keys.indexOf(key) === -1;
+            return _this._keys.indexOf(key) !== -1;
         };
         return this.checkKeyAndPerformAction(containsKeyAction, key);
     };
@@ -85,5 +85,4 @@ var Dictionary = (function () {
     Dictionary.undefinedKeyErrorMessage = "Key is either undefined, null or an empty string.";
     return Dictionary;
 }());
-exports.Dictionary = Dictionary;
-exports.default = Dictionary;
+exports["default"] = Dictionary;

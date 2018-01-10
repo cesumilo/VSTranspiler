@@ -1,4 +1,10 @@
 "use strict";
+/**
+ * Created by cesumilo
+ * Author: Guillaume ROBIN <robinguillaume.pro@gmail.com>
+ * Date: 10/01/2018
+ * Licence: All rights reserved @ Guillaume ROBIN <robinguillaume.pro@gmail.com>
+ */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -9,10 +15,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var Node_1 = require("./graph/Node");
 var Gate_1 = require("./graph/Gate");
-var AddNode = (function (_super) {
+var Graph_1 = require("./graph/Graph");
+var AddNode = /** @class */ (function (_super) {
     __extends(AddNode, _super);
     function AddNode(name) {
         return _super.call(this, name) || this;
@@ -22,41 +29,49 @@ var AddNode = (function (_super) {
         var a = this.inputs[0];
         var b = this.inputs[1];
         output.setValue(a.getValue() + b.getValue());
+        console.log(output);
+        return (this.isLeaf() ? null : this.childs[0]);
     };
     return AddNode;
-}(Node_1.default));
-var SubstractNode = (function (_super) {
-    __extends(SubstractNode, _super);
-    function SubstractNode(name) {
+}(Node_1["default"]));
+var SubtractNode = /** @class */ (function (_super) {
+    __extends(SubtractNode, _super);
+    function SubtractNode(name) {
         return _super.call(this, name) || this;
     }
-    SubstractNode.prototype.compute = function () {
+    SubtractNode.prototype.compute = function () {
         var output = this.outputs[0];
         var a = this.inputs[0];
         var b = this.inputs[1];
         output.setValue(a.getValue() - b.getValue());
+        console.log(output);
+        return (this.isLeaf() ? null : this.childs[0]);
     };
-    return SubstractNode;
-}(Node_1.default));
+    return SubtractNode;
+}(Node_1["default"]));
 function main() {
+    var graph = new Graph_1["default"]("graph");
     var addNode = new AddNode("add node");
-    var subNode = new SubstractNode("sub node");
-    var a = new Gate_1.default("a");
-    var b = new Gate_1.default("b");
-    var addResult = new Gate_1.default("addResult");
-    var substractResult = new Gate_1.default("substractResult");
-    addNode.addInput(a);
-    addNode.addInput(b);
+    var subNode = new SubtractNode("sub node");
+    var a = new Gate_1["default"]("a");
+    var b = new Gate_1["default"]("b");
+    var c = new Gate_1["default"]("b");
+    var addResult = new Gate_1["default"]("addResult");
+    var subtractResult = new Gate_1["default"]("subtractResult");
     addNode.addOutput(addResult);
-    addNode.addChild(subNode);
-    subNode.setParent(addNode);
-    subNode.addInput(b);
-    subNode.addInput(addResult);
-    subNode.addOutput(substractResult);
+    subNode.addOutput(subtractResult);
+    graph.addNode(addNode);
+    graph.addNode(subNode);
+    graph.addInput(a);
+    graph.addInput(b);
+    graph.addReference(subNode.getName(), addResult);
+    graph.addReference(subNode.getName(), c);
+    graph.addLink(addNode.getName(), subNode.getName());
     a.setValue(10);
     b.setValue(10);
-    console.log("a is computed:", a.isComputed(), a.getValue());
-    console.log("b is computed:", b.isComputed(), b.getValue());
+    c.setValue(5);
+    graph.compute();
+    var output = graph.getOutputs()[0];
+    console.log("10 + 10 - 5 = ", output.getValue());
 }
 main();
-//# sourceMappingURL=index.js.map

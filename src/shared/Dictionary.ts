@@ -5,7 +5,7 @@
  * Licence: All rights reserved @ Guillaume ROBIN <robinguillaume.pro@gmail.com>
  */
 
-export class Dictionary<T extends number | string, U> {
+class Dictionary<T extends number | string, U> {
     private _keys: T[] = [];
     private _values: U[] = [];
 
@@ -72,7 +72,7 @@ export class Dictionary<T extends number | string, U> {
     public containsKey(key: T): boolean {
 
         let containsKeyAction = (key: T): boolean => {
-            return this._keys.indexOf(key) === -1;
+            return this._keys.indexOf(key) !== -1;
         };
 
         return <boolean>this.checkKeyAndPerformAction(containsKeyAction, key);
