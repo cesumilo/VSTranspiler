@@ -7,6 +7,7 @@
 
 import Node from './Node';
 import Dictionary from "../shared/Dictionary";
+import IGate from "./IGate";
 
 class Graph extends Node {
 
@@ -51,6 +52,26 @@ class Graph extends Node {
             this.network.getValue(child).setParent(null);
         }
         return containsKeys && removedChild;
+    }
+
+    addReference(node: string, value: IGate): boolean {
+        let addedValue = false;
+        const containsKey = this.network.containsKey(node);
+
+        if (containsKey) {
+            addedValue = this.network.getValue(node).addInput(value);
+        }
+        return containsKey && addedValue;
+    }
+
+    removeReference(node: string, value: string): boolean {
+        let removedValue = false;
+        const containsKey = this.network.containsKey(node);
+
+        if (containsKey) {
+            removedValue = this.network.getValue(node).removeInput(value);
+        }
+        return containsKey && removedValue;
     }
 
     compute(): void {

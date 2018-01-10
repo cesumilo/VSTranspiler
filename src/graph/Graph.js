@@ -47,6 +47,22 @@ var Graph = (function (_super) {
         }
         return containsKeys && removedChild;
     };
+    Graph.prototype.addReference = function (node, value) {
+        var addedValue = false;
+        var containsKey = this.network.containsKey(node);
+        if (containsKey) {
+            addedValue = this.network.getValue(node).addInput(value);
+        }
+        return containsKey && addedValue;
+    };
+    Graph.prototype.removeReference = function (node, value) {
+        var removedValue = false;
+        var containsKey = this.network.containsKey(node);
+        if (containsKey) {
+            removedValue = this.network.getValue(node).removeInput(value);
+        }
+        return containsKey && removedValue;
+    };
     Graph.prototype.compute = function () {
         var root = this.network.values().filter(function (value) { return value.isRoot(); })[0];
         var leaf = this.network.values().filter(function (value) { return value.isLeaf(); })[0];
