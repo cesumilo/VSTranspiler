@@ -7,7 +7,7 @@
 
 import Gate from './Gate';
 import ITranspiler from './ITranspiler';
-import Dictionary from './Dictionary';
+import Dictionary from '../src/shared/Dictionary';
 
 abstract class Node {
 
