@@ -9,14 +9,24 @@ import Node from './Node';
 import Dictionary from "../shared/Dictionary";
 import IGate from "./IGate";
 
+/** Class representing a Node in the Graph */
 class Graph extends Node {
 
+    /**
+     * Create a new Node in the Graph.
+     * @param {string} name contains the name of the created Graph
+     */
     constructor(name: string) {
         super(name);
 
         this.network = new Dictionary();
     }
 
+    /**
+     * Adds a new Node in the Graph.
+     * @param {Node} node contains the given node to add in the Graph
+     * @returns {boolean} true if the node has been added, otherwise false
+     */
     addNode(node: Node): boolean {
         const containsKey = this.network.containsKey(node.getName());
 
@@ -26,6 +36,11 @@ class Graph extends Node {
         return containsKey;
     }
 
+    /**
+     * Removes a node from the Graph.
+     * @param {string} name contains the node's name to remove from the Graph
+     * @returns {boolean} true if the node has been removed, otherwise false
+     */
     removeNode(name: string): boolean {
         const containsKey = this.network.containsKey(name);
 
@@ -35,6 +50,12 @@ class Graph extends Node {
         return containsKey;
     }
 
+    /**
+     * Adds a new link between two existing nodes.
+     * @param {string} parent contains the name of the node with the outgoing connection
+     * @param {string} child contains the name of the node with the ingoing connection
+     * @returns {boolean} true if the connection has been made, otherwise false
+     */
     addLink(parent: string, child: string): boolean {
         const containsKeys = this.network.containsKey(parent) && this.network.containsKey(child);
 
@@ -45,6 +66,12 @@ class Graph extends Node {
         return containsKeys;
     }
 
+    /**
+     * Removes a link between two existing nodes.
+     * @param {string} parent contains the name of the node with the outgoing connection
+     * @param {string} child contains the name of the node with the ingoing connection
+     * @returns {boolean} true if the connection has been removed, otherwise false
+     */
     removelink(parent: string, child: string): boolean {
         let removedChild = false;
         const containsKeys = this.network.containsKey(parent) && this.network.containsKey(child);
@@ -56,6 +83,12 @@ class Graph extends Node {
         return containsKeys && removedChild;
     }
 
+    /**
+     * Adds a reference to a node.
+     * @param {string} node contains the node's name to which adding the reference (Gate)
+     * @param {IGate} value contains the given gate to add to the node
+     * @returns {boolean} true if the reference has been added, otherwise false
+     */
     addReference(node: string, value: IGate): boolean {
         let addedValue = false;
         const containsKey = this.network.containsKey(node);
@@ -66,6 +99,12 @@ class Graph extends Node {
         return containsKey && addedValue;
     }
 
+    /**
+     * Removes a reference from a node.
+     * @param {string} node contains the node's name to which removing the reference (Gate)
+     * @param {string} value contains the gate's name to remove
+     * @returns {boolean} true if the reference has been removed, otherwise false
+     */
     removeReference(node: string, value: string): boolean {
         let removedValue = false;
         const containsKey = this.network.containsKey(node);
@@ -76,6 +115,10 @@ class Graph extends Node {
         return containsKey && removedValue;
     }
 
+    /**
+     * Resolve the graph and computes the output value.
+     * @returns {Node} the outgoing node to which the graph is connected
+     */
     compute(): Node {
         let current = this.network.values().filter((value) => value.isRoot())[0];
 
