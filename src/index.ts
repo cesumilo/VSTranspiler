@@ -53,7 +53,7 @@ function main() {
 
     let a: Gate<number> = new Gate<number>("a");
     let b: Gate<number> = new Gate<number>("b");
-    let c: Gate<number> = new Gate<number>("b");
+    let c: Gate<number> = new Gate<number>("c");
 
     let addResult: Gate<number> = new Gate<number>("addResult");
     let subtractResult: Gate<number> = new Gate<number>("subtractResult");

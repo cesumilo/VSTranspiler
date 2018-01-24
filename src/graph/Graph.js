@@ -1,10 +1,4 @@
 "use strict";
-/**
- * Created by cesumilo
- * Author: Guillaume ROBIN <robinguillaume.pro@gmail.com>
- * Date: 10/01/2018
- * Licence: All rights reserved @ Guillaume ROBIN <robinguillaume.pro@gmail.com>
- */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = Object.setPrototypeOf ||
         ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
@@ -15,14 +9,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var Node_1 = require("./Node");
 var Dictionary_1 = require("../shared/Dictionary");
-var Graph = /** @class */ (function (_super) {
+var Graph = (function (_super) {
     __extends(Graph, _super);
     function Graph(name) {
         var _this = _super.call(this, name) || this;
-        _this.network = new Dictionary_1["default"]();
+        _this.network = new Dictionary_1.default();
         return _this;
     }
     Graph.prototype.addNode = function (node) {
@@ -83,5 +77,6 @@ var Graph = /** @class */ (function (_super) {
         return (this.isLeaf() ? null : this.childs[0]);
     };
     return Graph;
-}(Node_1["default"]));
-exports["default"] = Graph;
+}(Node_1.default));
+exports.default = Graph;
+//# sourceMappingURL=Graph.js.map
