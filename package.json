@@ -1,0 +1,26 @@
+{
+  "name": "vstranspiler",
+  "version": "0.1.0",
+  "description": "Transpiler a visual programming language to any programming language.",
+  "license": "Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License",
+  "readmeFilename": "README.md",
+  "author": {
+    "name": "Guillaume Robin"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cesumilo/VSTranspiler.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cesumilo/VSTranspiler/issues"
+  },
+  "devDependencies": {
+    "typedoc": "^0.9.0",
+    "typescript": "^2.1.5"
+  },
+  "dependencies": {},
+  "scripts": {
+    "start": "tsc && node src/index.js",
+    "docs": "./node_modules/.bin/typedoc --out ./docs --mode modules ."
+  }
+}
