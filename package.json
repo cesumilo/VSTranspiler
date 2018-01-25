@@ -21,6 +21,6 @@
   "dependencies": {},
   "scripts": {
     "start": "tsc && node src/index.js",
-    "docs": "./node_modules/.bin/typedoc --out ./docs --mode modules ."
+    "docs": "./node_modules/.bin/typedoc --out ./docs --mode modules ./src"
   }
 }

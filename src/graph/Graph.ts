@@ -9,7 +9,7 @@ import Node from './Node';
 import Dictionary from "../shared/Dictionary";
 import IGate from "./IGate";
 
-/** Class representing a Node in the Graph */
+/** Class representing a Graph */
 class Graph extends Node {
 
     /**
